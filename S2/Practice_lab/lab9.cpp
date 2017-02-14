@@ -7,7 +7,7 @@
 using namespace std;
 
 double
-vector_multiply(vector<double> a, vector<double> b)
+vector_multiply(vector<double> &a, vector<double> &b)
 {
 	vector<double>::iterator it_a = a.begin();
 	vector<double>::iterator it_b = b.begin();
@@ -20,7 +20,7 @@ vector_multiply(vector<double> a, vector<double> b)
 }
 
 double
-vector_cos(vector<double> a, vector<double> b)
+vector_cos(vector<double> &a, vector<double> &b)
 {
 	return vector_multiply(a, b) / (sqrt(vector_multiply(a, a)) * sqrt(vector_multiply(b, b)));
 }
@@ -36,3 +36,14 @@ main()
 
 	return 0;
 }
+
+/*
+vector<double> dv_read(const string &file_name)
+{
+vector<double> result;
+ifstream file(file_name);
+for (double val; file >> val;)
+result.push_back(val);
+return result;
+}
+*/
