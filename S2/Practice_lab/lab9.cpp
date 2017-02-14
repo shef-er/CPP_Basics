@@ -28,17 +28,14 @@ vector_cos(vector<double> &a, vector<double> &b)
 void
 vector_centralize(vector<double> &vector)
 {
-	int n = 0;
-	double sum = 0;
-	double mid = 0;
-	for (auto& v : vector)
-	{
-		n++;
-		sum += v;
-	}
+	size_t n = vector.size();
 	if (n != 0)
 	{
-		mid = sum / n;
+		double sum = 0;
+		for (auto& v : vector)
+			sum += v;
+
+		double mid = sum / n;
 		for (auto& v : vector)
 			v = v - mid;
 	}
