@@ -23,12 +23,15 @@ my_ctype_table(const locale &base_loc)
   return table;
 }
 
-
-void count_words(istream &source, map<string, uint64_t> &counters)
+void
+count_words(istream &source, map<string, uint64_t> &counters)
 {
   // Считаем, что source содержит слова, разделённые пробелами.
   for (string word; source >> word;)
+  {
+    cout << " - " << word << ' ';
     counters[word]++;  
+  }
 }
 
 // Вывести в поток произвольный map.
@@ -43,21 +46,21 @@ ostream& print(ostream &os, const map<K, V> &m)
 int 
 main()
 {
-  // Вариант, работающий для русского языка в консоли при использовании Visual C++.
-  // При работе с файлами в кодировке Windows-1251 надо заменить 866 на 1251.
-  // К сожалению, имена локалей не стандартизированы (за исключением "C").
-  // Кроме того, Стандартом не предусмотрено средство извлечения списка имён поддерживаемых локалей.
   //locale base_loc("Russian_Russia.866");
   locale base_loc("ru_RU.utf8");
   cout.imbue(base_loc); // Задать локаль потоку вывода.
+  cout << "----------------" << endl;
   cout << "Base locale name:    " << base_loc.name() << endl;
 
   // Создать новую локаль, подставив фасет ctype с новой таблицей символов.
   locale my_loc(base_loc, new ctype<char>(my_ctype_table(base_loc), true));
   cout << "Changed locale name: " << my_loc.name() << endl;
+  cout << "----------------" << endl;
 
   cin.imbue(my_loc); // Задать локаль потоку ввода.
   cout << "Enter the text, please:\n";
+
+// ---- //
 
   stringstream words;
   map<string, uint64_t> counters;
@@ -66,11 +69,14 @@ main()
   for (string word; cin >> word;)
   {
     use_facet<ctype<char>>(base_loc).tolower(&word[0], &word[0] + word.size());
-    cout << word << ' ';
     words << word << ' ';
+
     count_words(words, counters);
+    
+    cout << words.str() << endl;
 
     print(cout, counters);
+
   }
 
   vector<pair<uint64_t, string>> vp;
