@@ -9,6 +9,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <functional>
 using namespace std;
 
 ctype_base::mask*
@@ -46,6 +47,14 @@ int
 main()
 {
 	locale base_loc("Russian_Russia.866");
+
+	map<string, uint64_t> counters;
+	vector<pair<uint64_t, string>> vp;
+
+	ifstream fin("input.txt");
+
+	// ---- //
+
 	//locale base_loc("ru_RU.utf8");
 	cout.imbue(base_loc); // Задать локаль потоку вывода.
 	cout << "----------------" << endl;
@@ -57,14 +66,11 @@ main()
 	cout << "----------------" << endl;
 
 	cin.imbue(my_loc); // Задать локаль потоку ввода.
+	fin.imbue(my_loc);
 	cout << "The text:\n";
 
 	// ---- //
 
-	map<string, uint64_t> counters;
-	vector<pair<uint64_t, string>> vp;
-
-	ifstream fin("input.txt");
 
 	for (string word; fin >> word;)
 	{
@@ -82,7 +88,7 @@ main()
 	for (auto &kv : counters)
 		vp.emplace_back(kv.second, kv.first);
 
-	sort(begin(vp), end(vp));
+	sort(begin(vp), end(vp), greater<>());
 
 	cout << "---- after sort:" << endl;
 	for (auto &p : vp)
