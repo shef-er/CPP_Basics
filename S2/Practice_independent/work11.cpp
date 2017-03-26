@@ -38,127 +38,143 @@ using namespace std;
 void
 squareCountingSort(vector<string> &A, vector<string> &B)
 {
-	size_t n = A.size();
+  size_t n = A.size();
 
-	for (size_t i = 0; i < n; i++)
-	{
-		size_t c = 0;
+  for (size_t i = 0; i < n; i++)
+  {
+    size_t c = 0;
 
-		for (size_t j = 0; j < i; j++)
-		if (A[j].size() <= A[i].size())
-			c = c + 1;
+    for (size_t j = 0; j < i; j++)
+    if (A[j].size() <= A[i].size())
+      c = c + 1;
 
-		for (size_t j = i + 1; j < n; j++)
-		if (A[j].size() < A[i].size())
-			c = c + 1;
-		B[c] = A[i];
-	}
+    for (size_t j = i + 1; j < n; j++)
+    if (A[j].size() < A[i].size())
+      c = c + 1;
+    B[c] = A[i];
+  }
 }
 
 void
 finishIt(vector<string> &A, vector<string> &B)
 {
-	if (A.back() == B[B.size() - 2])
-	{
-		cout << "resized";
-		A.resize(A.size() - 1);
-	}
-	else
-		cout << "the same";
+  if (A.back() == B[B.size() - 2])
+  {
+    cout << "resized";
+    A.resize(A.size() - 1);
+  }
+  else
+    cout << "the same";
 
 }
 
 
 
-
-vector<string>
-blockInDaHouse(vector<string> &A)
-{
-	vector<string> B;
-
-	// n starts from center
-	size_t n = A.size();
-	size_t m = A.size() / 2 + A.size() % 2;
-	size_t p = n - m;
-	cout << "$m " << m << endl;
-	cout << "$p " << p << endl;
-
-	for (size_t i = 0; i < p; i++)
-	{
-		m++;
-		for (size_t j = i; j < n; j++)
-		{
-			if (A[j + m] == A[j])
-			{
-				B.push_back(A[i]);
-			}
-		}
-
-
-		for (size_t j = 0; j < A.size(); j++)
-		{
-			cout << "@  ( " << j << ", " << j + m << " ) ";
-			cout << A[j] << " -?- " << A[j + m] << endl;
-
-			if (B[j] == A[j + m])
-			{
-				B.push_back(A[i]);
-				B.pop_back();
-				goto END;
-			}
-		}
-	}
-
-	END:
-	cout << "#m " << m << endl;
-	//A.erase(A.begin() + m, A.end());
-	return B;
-}
 
 template <class T>
 void
 print(vector<T> &v)
 {
-	for (auto &e : v)
-		cout << e << endl;
+  size_t i = 1;
+  for (auto &e : v)
+    cout << i++ << " | "<<  e << endl;
+}
+
+vector<string>
+blockPostfixPurge(vector<string> &A)
+{
+  vector<string> B;
+
+  size_t n = A.size() / 2;
+
+  // 'mid' is on center or below
+  //  (example: for 8 mid=4; for 5 mid=3)
+  size_t mid = A.size() / 2 + A.size() % 2;
+
+  // 'rest' is count of elem from 'm' to end
+  //  (example: for 8 rest=4; for 5 rest=2)
+  size_t rest = A.size() - mid;
+
+  size_t delta = mid;
+
+  cout << "#A.size()  = " << A.size() << endl;
+  cout << "#n         = " << n << endl;
+  cout << "#mid       = " << mid << endl;
+  cout << "------------" << endl;
+
+  for (size_t i = 0; i < n; i++)
+  {
+    delta++;
+    rest = A.size() - delta;
+
+    for (size_t j = i; j < rest; j++)
+      if (A[j + delta] == A[j])
+      {
+        cout << "@+ ( " << j << ", " << j + delta + 1 << " ) ";
+        cout << A[j] << " -- " << A[j + delta] << endl;
+        B.push_back(A[i]);
+      }
+      else if (j + delta + 1 == A.size())
+      {
+        cout << "@- ( " << j << ", " << j + delta + 1 << " ) ";
+        cout << A[j] << " -- " << A[j + delta] << endl;
+        B.erase(B.begin(), B.end());
+        goto END;
+      }
+      else
+      {
+        cout << "@  ( " << j << ", " << j + delta + 1 << " ) ";
+        cout << A[j] << " -- " << A[j + delta] << endl;
+      }
+  }
+  cout << "------------" << endl;
+
+  END:
+  A.erase(A.end() - B.size(), A.end());
+  return B;
 }
 
 int
 main()
 {
-	string str1 = "yea im an eloquent";
-	string str2 = "soft kitty warm kitty";
-	string str3 = "stein um stein";
-	string str4 = "true beauty is so painful my dear";
-	string str5 = "wasting time with the devil in the details";
+  string str1 = "yes im an eloquent";
+  string str2 = "soft kitty warm kitty";
+  string str3 = "stein um stein";
+  string str4 = "true beauty is so painful my dear";
+  string str5 = "wasting time with the devil in the details";
 
-	vector<string> A = {
-		str4, //
-		str5, //
-		str5, //
-		str2, 
-		str1, 
-		str2, 
-		str2, 
-		str4, 
-		str3,
-		str4, //
-		str5, //
-		str5  //
-	};
-	vector<string> B;
+  vector<string> A = {
+    str4, //
+    str5, //
+    str5, //
+    str2,
+    str1,
+    str2,
 
-	cout << endl << "---- A:" << endl;
-	print(A);
+    str2,
 
-	cout << endl << endl << endl;
+    str2,
+    str4,
+    str3,
+    str4, //
+    str5, //
+    str5, //
+    str4,
+  };
+  vector<string> B;
 
-	B = blockInDaHouse(A);
-	cout << endl;
-	cout << endl << "---- operated A:" << endl;
-	print(A);
-	cout << endl << "---- B:" << endl;
-	print(B);
+  cout << endl << "---- A:" << endl;
+  print(A);
 
-	return 0;
+  cout << endl << endl << endl;
+
+  //B = blockInDaHouse(A);
+  B = blockPostfixPurge(A);
+  cout << endl;
+  cout << endl << "---- operated A:" << endl;
+  print(A);
+  cout << endl << "---- B:" << endl;
+  print(B);
+
+  return 0;
 }
