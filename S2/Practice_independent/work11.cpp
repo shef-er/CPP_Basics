@@ -71,110 +71,136 @@ finishIt(vector<string> &A, vector<string> &B)
 
 
 
-template <class T>
 void
-print(vector<T> &v)
+print(vector<string> &v) 
 {
-  size_t i = 1;
+  size_t i = 0;
   for (auto &e : v)
-    cout << i++ << " | "<<  e << endl;
+    printf("%2zu | %s \n", i++, e.c_str());
+  if (i == 0)
+    cout << "empty" << endl;
 }
 
 vector<string>
 blockPostfixPurge(vector<string> &A)
 {
   vector<string> B;
-
-  size_t n = A.size() / 2;
-
   // 'mid' is on center or below
   //  (example: for 8 mid=4; for 5 mid=3)
   size_t mid = A.size() / 2 + A.size() % 2;
 
-  // 'rest' is count of elem from 'm' to end
-  //  (example: for 8 rest=4; for 5 rest=2)
-  size_t rest = A.size() - mid;
+  cout << endl << "------------" << endl;
+  cout << "size = " << A.size() << endl;
+  cout << "mid  = " << mid << endl;
+  cout << endl;
 
-  size_t delta = mid;
+  for(size_t i = mid, j = 0; i < A.size(); i++)
+    if (A[i] == A[j])
+    {
+      printf(" + ( %2zu, %2zu )    %10s    %10s \n", i, j, A[i].c_str(), A[j].c_str());
+      B.push_back(A[i]);
+      j++;
+    }
+    else if (i == A.size() - 1)
+    {
+      printf(" x ( %2zu, %2zu )    %10s    %10s \n", i, j, A[i].c_str(), A[j].c_str());
+      B.erase(B.begin(), B.end());
+    }
+    else
+      printf("   ( %2zu, %2zu )    %10s    %10s \n", i, j, A[i].c_str(), A[j].c_str());
 
-  cout << "#A.size()  = " << A.size() << endl;
-  cout << "#n         = " << n << endl;
-  cout << "#mid       = " << mid << endl;
   cout << "------------" << endl;
 
-  for (size_t i = 0; i < n; i++)
-  {
-    delta++;
-    rest = A.size() - delta;
-
-    for (size_t j = i; j < rest; j++)
-      if (A[j + delta] == A[j])
-      {
-        cout << "@+ ( " << j << ", " << j + delta + 1 << " ) ";
-        cout << A[j] << " -- " << A[j + delta] << endl;
-        B.push_back(A[i]);
-      }
-      else if (j + delta + 1 == A.size())
-      {
-        cout << "@- ( " << j << ", " << j + delta + 1 << " ) ";
-        cout << A[j] << " -- " << A[j + delta] << endl;
-        B.erase(B.begin(), B.end());
-        goto END;
-      }
-      else
-      {
-        cout << "@  ( " << j << ", " << j + delta + 1 << " ) ";
-        cout << A[j] << " -- " << A[j + delta] << endl;
-      }
-  }
-  cout << "------------" << endl;
-
-  END:
   A.erase(A.end() - B.size(), A.end());
   return B;
 }
 
+bool
+test(vector<string> &A)
+{
+
+  cout << endl << "---- input:" << endl;
+  print(A);
+  cout << "----" << endl;
+
+
+  vector<string> B = blockPostfixPurge(A);
+
+  cout << endl << "---- output:" << endl;
+  print(A);
+  cout << "----" << endl;
+
+  cout << endl << "---- buffer:" << endl;
+  print(B);
+  cout << "----" << endl;
+
+  return false;
+}
+
+
 int
 main()
 {
-  string str1 = "yes im an eloquent";
-  string str2 = "soft kitty warm kitty";
-  string str3 = "stein um stein";
-  string str4 = "true beauty is so painful my dear";
-  string str5 = "wasting time with the devil in the details";
+  string str1 = "aaa";
+  string str2 = "bbb";
+  string str3 = "ccc";
+  string str4 = "ddd";
+  string str5 = "zzz";
 
   vector<string> A = {
-    str4, //
-    str5, //
-    str5, //
-    str2,
-    str1,
-    str2,
-
-    str2,
-
-    str2,
-    str4,
+    str1, //
+    str1, //
+    str2, //
     str3,
-    str4, //
-    str5, //
-    str5, //
-    str4,
+    str5,
+    str5,
+    str3,
+    str3,
+    str3,
+    str5,
+    str1, //
+    str1, //
+    str2, //
   };
-  vector<string> B;
 
-  cout << endl << "---- A:" << endl;
-  print(A);
+  vector<string> B = {
+    str1, //
+    str1, //
+    str2, //
+    str5,
+    str1, //
+    str1, //
+    str2, //
+  };
 
-  cout << endl << endl << endl;
+  vector<string> C = {
+    str1, //
+    str1, //
+    str2, //
+    str3,
+    str5,
+    str5,
+    str3,
+    str3,
+    str3,
+    str5,
+    str1, //
+    str1, //
+    str2, //
+    str5,
+  };
 
-  //B = blockInDaHouse(A);
-  B = blockPostfixPurge(A);
-  cout << endl;
-  cout << endl << "---- operated A:" << endl;
-  print(A);
-  cout << endl << "---- B:" << endl;
-  print(B);
+  cout << endl << endl;
+  cout << "######## TEST 1 ########" << endl;
+  test(A);
+
+  cout << endl << endl;
+  cout << "######## TEST 2 ########" << endl;
+  test(B);
+
+  cout << endl << endl;
+  cout << "######## TEST 3 ########" << endl;
+  test(C);
 
   return 0;
 }
