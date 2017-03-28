@@ -1,0 +1,10 @@
+Bolgarian bg.txt
+German de.txt
+English en.txt
+Spanish es.txt
+French fr.txt
+Italian it.txt
+Polish pl.txt
+Portuguese pt.txt
+Russian ru.txt
+Serbian sr.txt
