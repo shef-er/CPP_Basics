@@ -63,11 +63,14 @@ my_ctype_table(const locale &base_loc)
 void
 count_seq(istream &source, Letter_seq &counters)
 {
+  if (!source)
+    throw 1;
+  
   // Считаем, что source содержит слова, разделённые пробелами.
   for (string word; source >> word;)
   {
     transform(word.begin(), word.end(), word.begin(), ::tolower);
-    for (size_t i = 0; 2 < (int)word.size() - i && i < word.size(); i++)
+    for (size_t i = 0; i+2 < word.size(); i++)
       counters[word.substr(i, 3)]++;
   }
 }
@@ -80,9 +83,6 @@ ostream& print(ostream &os, const map<K, V> &m)
     os << kv.first << ' ' << kv.second << '\n';
   return os;
 }
-
-
-
 
 int
 main(int argc, char *argv[])
@@ -114,15 +114,21 @@ main(int argc, char *argv[])
 
   // Попробуем открыть файл с исходным текстом.
   if (argc == 1) // файл по умолчанию.
-    input.open("input.txt");
-  else
-    input.open(argv[1]);
-
-
-  if (!input.is_open()) // открыть не удалось.
     return -1;
 
-  count_seq(input, counters);
+  for (int i = 1; i < argc ; i++)
+  {
+    input.clear();
+    input.open(argv[i]);
+
+    if (!input.is_open()) // открыть не удалось.
+      return -1;
+
+    count_seq(input, counters);
+
+    cout << argv[i] << endl;
+  }
+  cout << "----------------" << endl;
 
   vp.reserve(counters.size());
   for (auto &kv : counters)
@@ -137,7 +143,6 @@ main(int argc, char *argv[])
 
   for (auto &p : vp)
     cout << p.second << " " << p.first << endl;
-  cout << "----------------" << endl;
 
   return 0;
 }
