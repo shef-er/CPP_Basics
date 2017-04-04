@@ -65,7 +65,7 @@ count_seq(istream &source, Letter_seq &counters)
 {
   if (!source)
     throw 1;
-  
+
   // Считаем, что source содержит слова, разделённые пробелами.
   for (string word; source >> word;)
   {
@@ -123,6 +123,8 @@ main(int argc, char *argv[])
 
     if (!input.is_open()) // открыть не удалось.
       return -1;
+    if (!input)
+      throw 1;
 
     count_seq(input, counters);
 
