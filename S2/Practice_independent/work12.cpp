@@ -63,8 +63,6 @@ my_ctype_table(const locale &base_loc)
 void
 count_seq(istream &source, Letter_seq &counters)
 {
-  if (!source)
-    throw 1;
 
   // Считаем, что source содержит слова, разделённые пробелами.
   for (string word; source >> word;)
@@ -112,12 +110,12 @@ main(int argc, char *argv[])
 
   // ---- //
 
-  // Попробуем открыть файл с исходным текстом.
-  if (argc == 1) // файл по умолчанию.
+  if (argc == 1)
     return -1;
 
   for (int i = 1; i < argc ; i++)
   {
+    input.close();
     input.clear();
     input.open(argv[i]);
 
