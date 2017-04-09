@@ -9,7 +9,7 @@ CFLAGS = -Wall
 all:
 
 clean:
-	rm work9 work10 work11 work12 work13 work14 work15
+	rm -f work9 work10 work11 work12 work13 work14 work15
 
 work9:
 	$(CC) $(CFLAGS) work9.cpp -o work9
