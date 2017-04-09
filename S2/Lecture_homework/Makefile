@@ -9,7 +9,7 @@ CFLAGS1 = -Wall
 all:
 
 clean:
-	rm l1 l2 l3 l4 l5 l6 l7 l8 l9 l10 l11 l12 l13
+	rm -f l1 l2 l3 l4 l5 l6 l7 l8 l9 l10 l11 l12 l13
 
 l1:
 	$(CC) $(CFLAGS1) l1.cpp -o l1
