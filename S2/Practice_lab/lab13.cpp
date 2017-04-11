@@ -120,7 +120,7 @@ sequence_type(It from, It to)
 
 	std::pair<Sequence_type, It> result(type, lbl);
 
-	std::cout << "(" << state << ":" << result.first << ")[" << *(tmp) << "] " << std::endl;
+	std::cout << "(" << state << ":" << type << ")[" << *(lbl) << "] " << std::endl;
 	return result;
 }
 
