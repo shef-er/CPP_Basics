@@ -83,7 +83,6 @@ sequence_type(It from, It to)
 			{
 				type = seq_down_up;
 				state = fa_final_up;
-				lbl = tmp;
 			}
 			break;
 
