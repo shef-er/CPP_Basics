@@ -62,13 +62,13 @@ sequence_type(It from, It to)
       }
       break;
       
-    case exit:
-        type = false;
-        break;
+    case exit: break;
     }
   }   
 
-  if ( state == exit && (acc % 2) != 0)
+  if (state == exit)
+    type = false;
+  if ( (acc % 2) != 0)
     type = false;
         
   return type;
