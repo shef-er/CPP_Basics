@@ -68,7 +68,8 @@ sequence_type(It from, It to)
 
   if (state == exit)
     type = false;
-  if ( (acc % 2) != 0)
+    
+  if (acc % 2 != 0)
     type = false;
         
   return type;
