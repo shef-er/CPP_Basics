@@ -48,9 +48,7 @@ sequence_type(It from, It to)
 
     case zero:
       if (*tmp == 1)
-      {
         state = one;
-      }
       break;
 
     case one:
