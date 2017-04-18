@@ -25,7 +25,8 @@ sequence_type(It from, It to)
   {
     zero = 0,
     one = 1,
-    exit = 2
+    start = 2,
+    exit = 3
   };
 
   FA_State state = zero;
@@ -37,11 +38,18 @@ sequence_type(It from, It to)
   {
     switch (state) 
     {
+        
+    case start:
+      if (*tmp == 1)
+        state = one;
+      if (*tmp == 0)
+        state = zero;
+      break;
+
     case zero:
       if (*tmp == 1)
       {
         state = one;
-        type = false;
       }
       break;
 
@@ -50,18 +58,18 @@ sequence_type(It from, It to)
       if (*tmp == 1)
       {
         state = exit;
+        type = false;
       }
       break;
+      
     case exit:
         type = false;
         break;
     }
   }   
 
-    if ( (acc % 2) != 0)
-    {
-        type = false;
-    }
+  if ( state == exit && (acc % 2) != 0)
+    type = false;
         
   return type;
 }
