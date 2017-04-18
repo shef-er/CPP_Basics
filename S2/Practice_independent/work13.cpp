@@ -21,7 +21,6 @@ template <class It>
 bool
 sequence_type(It from, It to)
 {
-  // Заполнить ...
   enum FA_State
   {
     zero = 0,
@@ -29,7 +28,7 @@ sequence_type(It from, It to)
     exit = 2
   };
 
-  FA_State state = 0;
+  FA_State state = zero;
   size_t acc = 0;
   bool type = true;
 
@@ -42,6 +41,7 @@ sequence_type(It from, It to)
       if (*tmp == 1)
       {
         state = one;
+        type = false;
       }
       break;
 
@@ -52,6 +52,9 @@ sequence_type(It from, It to)
         state = exit;
       }
       break;
+    case exit:
+        type = false;
+        break;
     }
   }   
 
