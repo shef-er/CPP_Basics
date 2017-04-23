@@ -43,14 +43,12 @@ print_matrix(vector<vector<T>> const& input)
 }
 
 double 
-fact(int n)
+fact(unsigned n)
 {
-    if (n < 0) 
-        return 0;
-    if (n == 0)
-        return 1;
-    else
-        return n * fact(n - 1);
+    double f = n;
+    for (unsigned i = 2; i < n; ++i)
+        f *= i;
+    return f;
 }
 
 vec_matrix
