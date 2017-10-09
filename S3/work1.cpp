@@ -11,9 +11,6 @@
  *
  * =====================================================================================
  */
-#include <stdlib.h>
-#include <cstdlib>
-#include <cmath>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -22,7 +19,7 @@
 using namespace std;
 
 
-//---- used types ----//
+//---- custom types ----//
 
 template<typename T>
 using edges_list = vector<pair<T, T>>;
@@ -38,7 +35,7 @@ template <class T>
 void
 show_list(edges_list<T> input)
 {
-    cout << "## edges" << endl;
+    cout << "## edges list" << endl;
     for ( auto &edge : input)
     {
         cout << "[" << edge.first << "," << edge.second << "]" << endl;
@@ -50,7 +47,7 @@ template <class T>
 void
 show_list(neighbors_list<T> input)
 {
-    cout << "## neighbors" << endl;
+    cout << "## neighbors list" << endl;
     for ( auto &vertex : input)
     {
         cout << vertex[0] << ": ";
@@ -118,6 +115,17 @@ read_neighbors(const string &file_name)
 //---- displays ----//
 
 template <class T>
+bool
+is_unique(pair<T, T> input, edges_list<T> edges)
+{
+    for ( auto &edge : edges)
+        if ( (edge.first == input.first && edge.second == input.second) || (edge.first == input.second && edge.second == input.first) )
+            return false;
+
+    return true;
+}
+
+template <class T>
 neighbors_list<T>
 edges_to_neighbors(edges_list<T> input)
 {
@@ -125,6 +133,8 @@ edges_to_neighbors(edges_list<T> input)
 
 
 
+
+    show_list(result);
     return result;
 }
 
@@ -133,12 +143,15 @@ edges_list<T>
 neighbors_to_edges(neighbors_list<T> input)
 {
     edges_list<T> result;
+    pair<T, T> edge;
 
     for ( auto &vertex : input)
     {
         for ( auto neigh = vertex.begin()+1; neigh != vertex.end(); ++neigh )
         {
-            result.push_back( make_pair(vertex[0], *neigh) );
+            edge = make_pair(vertex[0], *neigh);
+            if ( is_unique(edge, result) )
+                result.push_back( edge );
         }
     }
 
@@ -151,7 +164,7 @@ neighbors_to_edges(neighbors_list<T> input)
 int
 main()
 {
-    string mode = "1";
+    string mode = "0";
 
     //cout << "choose mode:\n (0) edges to neighbors list\n (1) neighbors to edges list" << endl;
     //cin >> mode;
