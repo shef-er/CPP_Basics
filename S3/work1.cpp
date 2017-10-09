@@ -166,8 +166,8 @@ main()
 {
     string mode = "0";
 
-    //cout << "choose mode:\n (0) edges to neighbors list\n (1) neighbors to edges list" << endl;
-    //cin >> mode;
+    cout << "choose mode:\n (0) edges to neighbors list\n (1) neighbors to edges list" << endl;
+    cin >> mode;
 
     if (mode == "0") {
         edges_to_neighbors( read_edges<string>("edges.txt") );
