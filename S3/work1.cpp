@@ -29,6 +29,32 @@ template<typename T>
 using neighbors_list = vector<vector<T>>;
 
 
+//---- utilities ----//
+
+template <class T>
+bool
+is_unique(pair<T, T> input, edges_list<T> edges)
+{
+    for ( auto &edge : edges)
+        if ( (edge.first == input.first && edge.second == input.second) ||
+             (edge.first == input.second && edge.second == input.first) )
+            return false;
+
+    return true;
+}
+
+template <class T>
+bool
+is_unique(T token, neighbors_list<T> neighbors)
+{
+    for ( auto &neigh : neighbors)
+        if ( token == neigh.front() )
+            return false;
+
+    return true;
+}
+
+
 //---- show list ----//
 
 template <class T>
@@ -50,7 +76,7 @@ show_list(neighbors_list<T> input)
     cout << "## neighbors list" << endl;
     for ( auto &vertex : input)
     {
-        cout << vertex[0] << ": ";
+        cout << vertex.front() << ": ";
         for ( auto neigh = vertex.begin()+1; neigh != vertex.end(); ++neigh )
         {
             cout << *neigh << " ";
@@ -115,29 +141,6 @@ read_neighbors(const string &file_name)
 //---- displays ----//
 
 template <class T>
-bool
-is_unique(pair<T, T> input, edges_list<T> edges)
-{
-    for ( auto &edge : edges)
-        if ( (edge.first == input.first && edge.second == input.second) ||
-             (edge.first == input.second && edge.second == input.first) )
-            return false;
-
-    return true;
-}
-
-template <class T>
-bool
-is_unique(T token, neighbors_list<T> neighbors)
-{
-    for ( auto &neigh : neighbors)
-        if ( token == neigh[0] )
-            return false;
-
-    return true;
-}
-
-template <class T>
 neighbors_list<T>
 edges_to_neighbors(edges_list<T> input)
 {
@@ -182,7 +185,7 @@ neighbors_to_edges(neighbors_list<T> input)
     {
         for ( auto neigh = vertex.begin()+1; neigh != vertex.end(); ++neigh )
         {
-            edge = make_pair(vertex[0], *neigh);
+            edge = make_pair(vertex.front(), *neigh);
             if ( is_unique(edge, result) )
                 result.push_back( edge );
         }
@@ -193,6 +196,7 @@ neighbors_to_edges(neighbors_list<T> input)
 }
 
 
+//---- main ----//
 
 int
 main()
