@@ -71,20 +71,20 @@ edges_list<T>
 read_edges(const string &file_name)
 {
     edges_list<T> result;
-    pair <T, T> val;
+    pair <T, T> edge;
 
     ifstream file(file_name);
-    string line;
+    T line;
 
     while ( getline(file, line) )
     {
         istringstream iss(line);
 
-        if ( !(iss >> val.first >> val.second) ) break;
-        result.push_back(val);
+        if ( !(iss >> edge.first >> edge.second) ) break;
+        result.push_back(edge);
     }
-    show_list(result);
 
+    show_list(result);
     return result;
 }
 
@@ -101,7 +101,7 @@ read_neighbors(const string &file_name)
     {
         vector<T> neigh;
         istringstream iss (line);
-        string vertex;
+        T vertex;
 
         while (iss >> vertex)
         {
@@ -109,8 +109,8 @@ read_neighbors(const string &file_name)
         }
         result.push_back(neigh);
     }
-    show_list(result);
 
+    show_list(result);
     return result;
 }
 
@@ -134,8 +134,15 @@ neighbors_to_edges(neighbors_list<T> input)
 {
     edges_list<T> result;
 
+    for ( auto &vertex : input)
+    {
+        for ( auto neigh = vertex.begin()+1; neigh != vertex.end(); ++neigh )
+        {
+            result.push_back( make_pair(vertex[0], *neigh) );
+        }
+    }
 
-
+    show_list(result);
     return result;
 }
 
