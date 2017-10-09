@@ -119,7 +119,19 @@ bool
 is_unique(pair<T, T> input, edges_list<T> edges)
 {
     for ( auto &edge : edges)
-        if ( (edge.first == input.first && edge.second == input.second) || (edge.first == input.second && edge.second == input.first) )
+        if ( (edge.first == input.first && edge.second == input.second) ||
+             (edge.first == input.second && edge.second == input.first) )
+            return false;
+
+    return true;
+}
+
+template <class T>
+bool
+is_unique(T token, neighbors_list<T> neighbors)
+{
+    for ( auto &neigh : neighbors)
+        if ( token == neigh[0] )
             return false;
 
     return true;
@@ -131,8 +143,29 @@ edges_to_neighbors(edges_list<T> input)
 {
     neighbors_list<T> result;
 
+    for ( auto &edge : input)
+    {
+        vector<T> neigh;
+        T vertex;
 
+        if ( is_unique(edge.first, result) )
+            vertex = edge.first;
+        else if ( is_unique(edge.second, result) )
+            vertex = edge.second;
+        else
+            continue;
 
+        neigh.push_back(vertex);
+        for ( auto &bone : input)
+        {
+            if (bone.first == vertex)
+                neigh.push_back(bone.second);
+            else if (bone.second == vertex)
+                neigh.push_back(bone.first);
+        }
+
+        result.push_back(neigh);
+    }
 
     show_list(result);
     return result;
