@@ -204,11 +204,11 @@ int
 main()
 {
     vector<Vertex> nodes {
-        make_pair(1,1),  // 0
-        make_pair(5,8),  // 1
-        make_pair(6,3),  // 2
-        make_pair(0,11), // 3
-        make_pair(9,1)   // 4
+        make_pair(1,1),
+        make_pair(5,8),
+        make_pair(6,3),
+        make_pair(0,11),
+        make_pair(9,1)
     };
 
     TSP(nodes);
